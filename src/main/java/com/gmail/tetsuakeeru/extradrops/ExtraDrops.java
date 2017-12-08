@@ -15,6 +15,8 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
+import com.gmail.tetsuakeeru.extradrops.manager.DropsManager;
+import com.gmail.tetsuakeeru.extradrops.manager.EventManager;
 import com.google.inject.Inject;
 
 @Plugin(id = "extradrops", name = "ExtraDrops", version = "0.0.1", authors = "Akeeru (TetsuAkeeru)")
@@ -32,6 +34,9 @@ public class ExtraDrops
 	private Game game = Sponge.getGame();
 
 	private ExtraDropsConfig edsconfig;
+	
+	public EventManager managerEvent;
+	public DropsManager managerDrops;
 
 	@Listener
 	public void preInit(GamePreInitializationEvent event)
@@ -45,7 +50,8 @@ public class ExtraDrops
 	@Listener
 	public void init(GameInitializationEvent event)
 	{
-
+		managerEvent = new EventManager(plugin);
+		managerDrops = new DropsManager();
 	}
 
 	@Listener
@@ -83,5 +89,10 @@ public class ExtraDrops
 	public Path getConfigDir()
 	{
 		return configDir;
+	}
+	
+	public Logger getLogger()
+	{
+		return logger;
 	}
 }
