@@ -1,11 +1,11 @@
-package com.gmail.tetsuakeeru.extradrops.api;
+package com.gmail.tetsuakeeru.extradrop.api;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.gmail.tetsuakeeru.extradrops.ExtraDrops;
+import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
@@ -14,7 +14,7 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 public abstract class BaseConfig
 {
 	protected Path configFile;
-	protected Path configDir = ExtraDrops.getPlugin().getConfigDir();
+	protected Path configDir = ExtraDrop.getPlugin().getConfigDir();
 	protected ConfigurationLoader<CommentedConfigurationNode> configLoader;
 	protected CommentedConfigurationNode configNode;
 

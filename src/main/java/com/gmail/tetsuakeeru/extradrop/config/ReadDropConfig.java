@@ -1,13 +1,13 @@
-package com.gmail.tetsuakeeru.extradrops.config;
+package com.gmail.tetsuakeeru.extradrop.config;
 
 import java.util.Map.Entry;
 import java.util.Optional;
 
 import org.spongepowered.api.item.ItemType;
 
-import com.gmail.tetsuakeeru.extradrops.ExtraDrops;
-import com.gmail.tetsuakeeru.extradrops.api.BaseConfig;
-import com.gmail.tetsuakeeru.extradrops.drops.BlockDrop;
+import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
+import com.gmail.tetsuakeeru.extradrop.api.BaseConfig;
+import com.gmail.tetsuakeeru.extradrop.drops.BlockDrop;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
@@ -34,16 +34,15 @@ public class ReadDropConfig extends BaseConfig
 		{
 			String trigger = s.getKey().toString();
 			
-			Optional<ItemType> it = ExtraDrops.getPlugin().getGame().getRegistry().getType(ItemType.class, trigger);
+			Optional<ItemType> it = ExtraDrop.getPlugin().getGame().getRegistry().getType(ItemType.class, trigger);
 			
 			if (!it.isPresent())
 			{
+				ExtraDrop.getPlugin().getLogger().error("This item or block doesn't exist! (" + trigger + ")");
 				continue;
 			}
 			else
 			{
-				ExtraDrops.getPlugin().getLogger().info("Drop Test:   " + it.get().getType().getId());
-				
 				BlockDrop bd = new BlockDrop(trigger);
 				
 				for (Entry<Object, ? extends CommentedConfigurationNode> v : s.getValue().getChildrenMap().entrySet())
@@ -55,7 +54,7 @@ public class ReadDropConfig extends BaseConfig
 					
 				}
 				
-				ExtraDrops.getPlugin().managerDrops.addDrop(bd);
+				ExtraDrop.getPlugin().managerDrops.addDrop(bd);
 			}
 		}
 	}

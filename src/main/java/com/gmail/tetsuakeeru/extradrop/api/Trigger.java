@@ -1,4 +1,4 @@
-package com.gmail.tetsuakeeru.extradrops.api;
+package com.gmail.tetsuakeeru.extradrop.api;
 
 public class Trigger
 {

@@ -1,4 +1,4 @@
-package com.gmail.tetsuakeeru.extradrops;
+package com.gmail.tetsuakeeru.extradrop;
 
 import java.nio.file.Path;
 
@@ -15,13 +15,14 @@ import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
 import org.spongepowered.api.plugin.Plugin;
 
-import com.gmail.tetsuakeeru.extradrops.config.ExtraDropsConfig;
-import com.gmail.tetsuakeeru.extradrops.manager.DropsManager;
-import com.gmail.tetsuakeeru.extradrops.manager.EventManager;
+import com.gmail.tetsuakeeru.extradrop.config.ExtraDropsConfig;
+import com.gmail.tetsuakeeru.extradrop.manager.CommandManager;
+import com.gmail.tetsuakeeru.extradrop.manager.DropsManager;
+import com.gmail.tetsuakeeru.extradrop.manager.EventManager;
 import com.google.inject.Inject;
 
-@Plugin(id = "extradrops", name = "ExtraDrops", version = "0.0.1", authors = "Akeeru (TetsuAkeeru)")
-public class ExtraDrops
+@Plugin(id = "extradrop", name = "ExtraDrop", version = "0.0.2", authors = "Akeeru (TetsuAkeeru)")
+public class ExtraDrop
 {
 	@Inject
 	private Logger logger;
@@ -30,7 +31,7 @@ public class ExtraDrops
 	@ConfigDir(sharedRoot = false)
 	private Path configDir;
 
-	public static ExtraDrops plugin;
+	public static ExtraDrop plugin;
 
 	private Game game = Sponge.getGame();
 
@@ -46,7 +47,7 @@ public class ExtraDrops
 		
 		managerDrops = new DropsManager();
 
-		edsconfig = new ExtraDropsConfig("extradrops.conf");
+		edsconfig = new ExtraDropsConfig("extradrop.conf");
 		edsconfig.setup();
 	}
 
@@ -54,6 +55,8 @@ public class ExtraDrops
 	public void init(GameInitializationEvent event)
 	{
 		managerEvent = new EventManager(plugin);
+		CommandManager.load(plugin);
+		
 	}
 
 	@Listener
@@ -76,14 +79,16 @@ public class ExtraDrops
 
 	@Listener
 	public void onReload(GameReloadEvent event)
-	{}
+	{
+		edsconfig.reload();
+	}
 
 	public Game getGame()
 	{
 		return game;
 	}
 
-	public static ExtraDrops getPlugin()
+	public static ExtraDrop getPlugin()
 	{
 		return plugin;
 	}
@@ -96,5 +101,10 @@ public class ExtraDrops
 	public Logger getLogger()
 	{
 		return logger;
+	}
+	
+	public void reload()
+	{
+		edsconfig.reload();
 	}
 }

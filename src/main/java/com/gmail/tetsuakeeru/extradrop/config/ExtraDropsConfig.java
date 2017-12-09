@@ -1,9 +1,9 @@
-package com.gmail.tetsuakeeru.extradrops.config;
+package com.gmail.tetsuakeeru.extradrop.config;
 
 import java.util.Map.Entry;
 
-import com.gmail.tetsuakeeru.extradrops.ExtraDrops;
-import com.gmail.tetsuakeeru.extradrops.api.BaseConfig;
+import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
+import com.gmail.tetsuakeeru.extradrop.api.BaseConfig;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
@@ -18,28 +18,22 @@ public class ExtraDropsConfig extends BaseConfig
 	@Override
 	public void init()
 	{
-		ExtraDrops.getPlugin().getLogger().info("ASGBSFDAB");
-		
+		ExtraDrop.getPlugin().managerDrops.clear();
+
 		if (!get().getNode("include").isVirtual())
 		{
-			ExtraDrops.getPlugin().getLogger().info("Test aD ASD: ");
-			
-			for (Entry<Object, ? extends CommentedConfigurationNode> s: get().getNode("include").getChildrenMap().entrySet())
+			for (Entry<Object, ? extends CommentedConfigurationNode> s : get().getNode("include").getChildrenMap().entrySet())
 			{
 				String name = s.getKey().toString();
 				boolean turn = s.getValue().getBoolean();
-				
-				ExtraDrops.getPlugin().getLogger().info("Test: " + name + "   " + turn);
-				
+
+				ExtraDrop.getPlugin().getLogger().info("Include '" + name + "':" + turn);
+
 				if (turn)
 				{
-					ExtraDrops.getPlugin().getLogger().info("Turnning on:: " + name);
-					
-					String folders = name.substring(0, name.lastIndexOf("/")+1);
+					String folders = name.substring(0, name.lastIndexOf("/") + 1);
 					String fileName = name.substring(folders.length());
-					
-					ExtraDrops.getPlugin().getLogger().info("Turnning on:: " + folders + "  ||  " + fileName);
-					
+
 					new ReadDropConfig(fileName, folders).setup();
 				}
 			}

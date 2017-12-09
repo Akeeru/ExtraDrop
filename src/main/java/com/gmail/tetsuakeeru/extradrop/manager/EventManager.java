@@ -1,4 +1,4 @@
-package com.gmail.tetsuakeeru.extradrops.manager;
+package com.gmail.tetsuakeeru.extradrop.manager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,16 +8,16 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 
-import com.gmail.tetsuakeeru.extradrops.ExtraDrops;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger.DropType;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger.Triggers;
+import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger.DropType;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger.Triggers;
 
 public class EventManager
 {
-	ExtraDrops plugin;
+	ExtraDrop plugin;
 
-	public EventManager(ExtraDrops origin)
+	public EventManager(ExtraDrop origin)
 	{
 		this.plugin = origin;
 		Sponge.getEventManager().registerListeners(origin, this);
@@ -29,12 +29,7 @@ public class EventManager
 
 		if (event.getCause().first(Player.class).isPresent())
 		{
-			// Player p = event.getCause().first(Player.class).get();
-
 			String name = event.getTransactions().get(0).getOriginal().getState().getType().getName();
-			// p.sendMessage(Text.of("Zniszczyłeś: " + name));
-
-			//plugin.managerDrops.exeDropBlock(event.getTransactions().get(0).getOriginal());
 			
 			Set<Trigger> triggers = new HashSet<>();
 			triggers.add(new Trigger(Triggers.DROPTYPE, DropType.BLOCK));

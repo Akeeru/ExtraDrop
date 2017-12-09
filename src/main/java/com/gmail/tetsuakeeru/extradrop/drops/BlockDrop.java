@@ -1,7 +1,7 @@
-package com.gmail.tetsuakeeru.extradrops.drops;
+package com.gmail.tetsuakeeru.extradrop.drops;
 
-import com.gmail.tetsuakeeru.extradrops.api.BaseDrop;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger.DropType;
+import com.gmail.tetsuakeeru.extradrop.api.BaseDrop;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger.DropType;
 
 public class BlockDrop extends BaseDrop
 {

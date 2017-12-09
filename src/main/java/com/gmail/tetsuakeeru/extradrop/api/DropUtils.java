@@ -1,11 +1,11 @@
-package com.gmail.tetsuakeeru.extradrops.api;
+package com.gmail.tetsuakeeru.extradrop.api;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.gmail.tetsuakeeru.extradrops.api.Trigger.Triggers;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger.Triggers;
 
 public class DropUtils
 {

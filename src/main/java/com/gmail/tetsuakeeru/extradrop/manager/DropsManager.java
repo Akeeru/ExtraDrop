@@ -1,4 +1,4 @@
-package com.gmail.tetsuakeeru.extradrops.manager;
+package com.gmail.tetsuakeeru.extradrop.manager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,22 +8,15 @@ import java.util.Set;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import com.gmail.tetsuakeeru.extradrops.api.BaseDrop;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger;
-import com.gmail.tetsuakeeru.extradrops.drops.BlockDrop;
+import com.gmail.tetsuakeeru.extradrop.api.BaseDrop;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger;
 
 public class DropsManager
 {
 	private List<BaseDrop> drops = new ArrayList<>();
 
 	public DropsManager()
-	{
-		BlockDrop bd = new BlockDrop("minecraft:dirt");
-		bd.addDrop(0.7, "sand");
-		bd.addDrop(1, "fish");
-
-		addDrop(bd);
-	}
+	{}
 
 	public List<BaseDrop> getDrops(Set<Trigger> set)
 	{
@@ -70,5 +63,10 @@ public class DropsManager
 		double chance = rand.nextDouble();
 
 		tr.forEach(item -> item.exe(chance, loc));
+	}
+
+	public void clear()
+	{
+		drops.clear();
 	}
 }

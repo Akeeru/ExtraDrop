@@ -1,4 +1,4 @@
-package com.gmail.tetsuakeeru.extradrops.api;
+package com.gmail.tetsuakeeru.extradrop.api;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,23 +19,18 @@ import org.spongepowered.api.world.World;
 import org.spongepowered.api.world.extent.Extent;
 
 import com.flowpowered.math.vector.Vector3d;
-import com.gmail.tetsuakeeru.extradrops.ExtraDrops;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger.DropType;
-import com.gmail.tetsuakeeru.extradrops.api.Trigger.Triggers;
+import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger.DropType;
+import com.gmail.tetsuakeeru.extradrop.api.Trigger.Triggers;
 
 public class BaseDrop
 {
 	protected Map<ItemStack, Double> drops = new HashMap<>();
-	// protected final String trigger;
-	// protected final DropType type;
-
+	
 	protected Set<Trigger> triggers = new HashSet<>();
 
 	public BaseDrop(String trigger, DropType type)
 	{
-		// triggers.put(Triggers.NAME, trigger);
-		// triggers.put(Triggers.DROPTYPE, type);
-
 		triggers.add(new Trigger(Triggers.NAME, trigger));
 		triggers.add(new Trigger(Triggers.DROPTYPE, type));
 
@@ -58,11 +53,8 @@ public class BaseDrop
 	 */
 	public void addDrop(double chance, String name)
 	{
-		ItemType it = ExtraDrops.getPlugin().getGame().getRegistry().getType(ItemType.class, name).get();
-
-		// DummyObjectProvider.createFor(ItemType.class,
-		// name.toUpperCase()).getType();
-
+		ItemType it = ExtraDrop.getPlugin().getGame().getRegistry().getType(ItemType.class, name).get();
+		
 		ItemStack is = ItemStack.builder().itemType(it).build();
 		drops.put(is, chance);
 	}
@@ -108,8 +100,6 @@ public class BaseDrop
 			ItemStack is = s.getKey();
 			double ch = s.getValue();
 
-			ExtraDrops.getPlugin().getLogger().info("  ||  " + is.getItem().getId() + " -> " + ch);
-
 			if (ch >= chance)
 			{
 				spawnItem(is, loc);
@@ -131,76 +121,11 @@ public class BaseDrop
 	public boolean checkSet(Set<Trigger> set)
 	{
 		boolean bool = true;
-
-		// ExtraDrops.getPlugin().getLogger().info("=========================");
-		// ExtraDrops.getPlugin().getLogger().info("STAGE 1: " + bool);
-		//
+		
 		bool = DropUtils.comparateTriggers(triggers, set);
-
-		// triggers.forEach(item ->{
-		// ExtraDrops.getPlugin().getLogger().info("TEst *1: " +
-		// item.trigger.toString() + " : " + item.value.toString());
-		// });
-
-		// set.forEach(item ->{
-		// ExtraDrops.getPlugin().getLogger().info("TEst *2: " +
-		// item.trigger.toString() + " : " + item.value.toString());
-		// });
-
-		// Stream<Trigger> tr = set.stream().filter(item -> check(item.trigger,
-		// item.value) == false);
-
-		// set.forEach(item -> {
-		// check(item.trigger, item.value);
-		// });
-		//
-		// if (tr.isPresent())
-		// {
-		// bool = false;
-		// }
-
-		// ExtraDrops.getPlugin().getLogger().info("STAGE 2: " + bool);
-
+		
 		return bool;
 	}
-
-	// protected boolean check(Triggers key, Object value)
-	// {
-	//// ExtraDrops.getPlugin().getLogger().info("TEst 1: " + key.toString() + "
-	// || " + triggers.contains(new Trigger(key, "all")));
-	//
-	// Trigger all = new Trigger(key, "all");
-	// Trigger cur = new Trigger(key, value);
-	//
-	//// triggers.forEach(item -> {
-	////
-	//// ExtraDrops.getPlugin().getLogger().info("TEst 1 items: "+ item.trigger
-	// + ": " + item.value);
-	//// });
-	////
-	// ExtraDrops.getPlugin().getLogger().info("TEst 1 'ALL': " + all.trigger +
-	// ": " + all.value + " -> " + all.equals(triggers));
-	// ExtraDrops.getPlugin().getLogger().info("TEst 1 'CUR': " + cur.trigger +
-	// ": " + cur.value + " -> " + triggers.equals(cur));
-	//
-	// if (triggers.contains(all))
-	// {
-	// return true;
-	// }
-	// else
-	// {
-	//// ExtraDrops.getPlugin().getLogger().info("TEst 2: " + key.toString() + "
-	// || " + triggers.contains(new Trigger(key, value)));
-	// if (triggers.contains(cur))
-	// {
-	// return true;
-	// }
-	// else
-	// {
-	// return false;
-	// }
-	// }
-	// }
 
 	public Trigger find(Triggers key)
 	{
