@@ -22,9 +22,7 @@ public class ReadDropConfig extends BaseConfig
 	@Override
 	public void populate()
 	{
-		get().getNode("minecraft:stone", "minecraft:iron_ingot", "chance").setValue(0.2);
-		get().getNode("minecraft:stone", "minecraft:gold_ingot", "chance").setValue(0.2);
-		get().getNode("minecraft:stone", "minecraft:gold_block", "chance").setValue(0.2);
+		
 	}
 
 	@Override

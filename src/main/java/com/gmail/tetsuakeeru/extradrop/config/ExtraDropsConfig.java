@@ -1,6 +1,11 @@
 package com.gmail.tetsuakeeru.extradrop.config;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map.Entry;
+
+import org.spongepowered.api.asset.Asset;
 
 import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
 import com.gmail.tetsuakeeru.extradrop.api.BaseConfig;
@@ -43,9 +48,28 @@ public class ExtraDropsConfig extends BaseConfig
 	@Override
 	public void populate()
 	{
+		put(true, "include", "drops/stone.conf");
 		put(false, "include", "drops/blocks.conf");
-		put(false, "include", "drops/tools.conf");
-		put(false, "include", "drops/mobs.conf");
+		
+		copyFromAssets("stone.conf", "drops/");
+		copyFromAssets("blocks.conf", "drops/");
+	}
+
+	private void copyFromAssets(String name, String path)
+	{
+		Path tempDir = Paths.get(this.configDir + "/" + path, new String[0]);
+
+		try
+		{
+			Asset as = ExtraDrop.getPlugin().getGame().getAssetManager().getAsset(ExtraDrop.plugin, name).get();
+			
+			//as.copyToFile(tempDir);
+			as.copyToDirectory(tempDir);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
