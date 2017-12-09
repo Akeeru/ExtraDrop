@@ -20,7 +20,7 @@ public abstract class BaseConfig
 
 	public BaseConfig(String name)
 	{
-		this(name, ".conf");
+		this(name, "");
 	}
 
 	public BaseConfig(String name, String suffix)
@@ -71,7 +71,13 @@ public abstract class BaseConfig
 			init();
 		}
 	}
-
+	
+	public void reload()
+	{
+		save();
+		setup();
+	}
+	
 	public void load()
 	{
 		try

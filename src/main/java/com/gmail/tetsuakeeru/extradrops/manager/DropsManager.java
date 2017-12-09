@@ -3,14 +3,14 @@ package com.gmail.tetsuakeeru.extradrops.manager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
-import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import com.gmail.tetsuakeeru.extradrops.ExtraDrops;
 import com.gmail.tetsuakeeru.extradrops.api.BaseDrop;
-import com.gmail.tetsuakeeru.extradrops.api.BlockDrop;
+import com.gmail.tetsuakeeru.extradrops.api.Trigger;
+import com.gmail.tetsuakeeru.extradrops.drops.BlockDrop;
 
 public class DropsManager
 {
@@ -25,9 +25,18 @@ public class DropsManager
 		addDrop(bd);
 	}
 
-	public List<BaseDrop> getDrops()
+	public List<BaseDrop> getDrops(Set<Trigger> set)
 	{
 		List<BaseDrop> temp = new ArrayList<>();
+
+		for (BaseDrop bd : drops)
+		{
+
+			if (bd.checkSet(set))
+			{
+				temp.add(bd);
+			}
+		}
 
 		return temp;
 	}
@@ -53,22 +62,13 @@ public class DropsManager
 		}
 	}
 
-	public void exeDropBlock(BlockSnapshot bs)
+	public void exeDropTriggers(Set<Trigger> triggers, Location<World> loc)
 	{
+		List<BaseDrop> tr = getDrops(triggers);
+
 		Random rand = new Random();
 		double chance = rand.nextDouble();
 
-		for (BaseDrop bd : getAllDrops())
-		{
-			if (bd instanceof BlockDrop)
-			{
-				BlockDrop bld = (BlockDrop) bd;
-
-				if (bld.blockID.equalsIgnoreCase(bs.getState().getType().getId()))
-				{
-					bld.exe(chance, bs.getLocation().get());
-				}
-			}
-		}
+		tr.forEach(item -> item.exe(chance, loc));
 	}
 }
