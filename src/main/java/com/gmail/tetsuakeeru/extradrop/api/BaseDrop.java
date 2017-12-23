@@ -9,9 +9,6 @@ import java.util.Set;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.EntityTypes;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.event.cause.entity.spawn.EntitySpawnCause;
-import org.spongepowered.api.event.cause.entity.spawn.SpawnTypes;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.world.Location;
@@ -115,7 +112,7 @@ public class BaseDrop
 		Entity item = extent.createEntity(EntityTypes.ITEM, loc.getPosition());
 		item.offer(Keys.REPRESENTED_ITEM, is.createSnapshot());
 		item.setVelocity(new Vector3d(0, 0, 0));
-		extent.spawnEntity(item, Cause.source(EntitySpawnCause.builder().entity(item).type(SpawnTypes.PLUGIN).build()).build());
+		extent.spawnEntity(item);
 	}
 
 	public boolean checkSet(Set<Trigger> set)

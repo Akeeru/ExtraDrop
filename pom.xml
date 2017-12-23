@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.gitlab.akeeru</groupId>
 	<artifactId>extradrop</artifactId>
-	<version>0.0.2</version>
+	<version>0.1.0</version>
 	<name>ExtraDrop</name>
 
 	<build>
@@ -31,7 +31,7 @@
 		<dependency>
 			<groupId>org.spongepowered</groupId>
 			<artifactId>spongeapi</artifactId>
-			<version>6.1.0-SNAPSHOT</version>
+			<version>7.0.0-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
