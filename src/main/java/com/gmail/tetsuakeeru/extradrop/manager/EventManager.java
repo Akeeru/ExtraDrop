@@ -4,14 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.block.BlockSnapshot;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.block.ChangeBlockEvent;
 
 import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
-import com.gmail.tetsuakeeru.extradrop.api.Trigger;
-import com.gmail.tetsuakeeru.extradrop.api.Trigger.DropType;
-import com.gmail.tetsuakeeru.extradrop.api.Trigger.Triggers;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropArgs;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropType;
 
 public class EventManager
 {
@@ -29,15 +30,16 @@ public class EventManager
 
 		if (event.getCause().first(Player.class).isPresent())
 		{
-			String name = event.getTransactions().get(0).getOriginal().getState().getType().getName();
+			BlockSnapshot block = event.getTransactions().get(0).getOriginal();
+			String name = block.getState().getType().getName();
+			String world = block.getLocation().get().getExtent().getName();
 			
-			Set<Trigger> triggers = new HashSet<>();
-			triggers.add(new Trigger(Triggers.DROPTYPE, DropType.BLOCK));
-			triggers.add(new Trigger(Triggers.NAME,name));
+			Set<DropValue> values = new HashSet<>();
+			values.add(new DropValue(DropArgs.TYPE, DropType.BLOCK));
+			values.add(new DropValue(DropArgs.WORLD, world));
+			values.add(new DropValue(DropArgs.NAME, name));
 			
-			plugin.managerDrops.exeDropTriggers(triggers,event.getTransactions().get(0).getOriginal().getLocation().get());
-			
-			
+			plugin.managerDrops.exeDrop(block.getLocation().get(), values);
 		}
 	}
 }

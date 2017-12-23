@@ -21,7 +21,7 @@ import com.gmail.tetsuakeeru.extradrop.manager.DropsManager;
 import com.gmail.tetsuakeeru.extradrop.manager.EventManager;
 import com.google.inject.Inject;
 
-@Plugin(id = "extradrop", name = "ExtraDrop", version = "0.1.0", authors = "Akeeru (TetsuAkeeru)")
+@Plugin(id = "extradrop", name = "ExtraDrop", version = "0.1.2", authors = "Akeeru (TetsuAkeeru)")
 public class ExtraDrop
 {
 	@Inject
@@ -62,7 +62,7 @@ public class ExtraDrop
 	@Listener
 	public void postInit(GamePostInitializationEvent event)
 	{
-
+		
 	}
 
 	@Listener

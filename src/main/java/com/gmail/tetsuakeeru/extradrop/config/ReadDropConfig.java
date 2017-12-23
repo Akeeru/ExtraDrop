@@ -1,15 +1,15 @@
 package com.gmail.tetsuakeeru.extradrop.config;
 
-import java.util.Map.Entry;
-import java.util.Optional;
-
-import org.spongepowered.api.item.ItemType;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
 import com.gmail.tetsuakeeru.extradrop.api.BaseConfig;
-import com.gmail.tetsuakeeru.extradrop.drops.BlockDrop;
-
-import ninja.leaping.configurate.commented.CommentedConfigurationNode;
+import com.gmail.tetsuakeeru.extradrop.api.DropElement;
+import com.gmail.tetsuakeeru.extradrop.api.DropGroup;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropArgs;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropLevel;
 
 public class ReadDropConfig extends BaseConfig
 {
@@ -28,33 +28,73 @@ public class ReadDropConfig extends BaseConfig
 	@Override
 	public void init()
 	{
-		for (Entry<Object, ? extends CommentedConfigurationNode> s : get().getChildrenMap().entrySet())
+		Set<DropValue> global = new HashSet<>();
+		
+		ExtraDrop.getPlugin().getLogger().info("GLOBAL");
+		
+		if(!get().getNode("global").isVirtual())
 		{
-			String trigger = s.getKey().toString();
-			
-			Optional<ItemType> it = ExtraDrop.getPlugin().getGame().getRegistry().getType(ItemType.class, trigger);
-			
-			if (!it.isPresent())
-			{
-				ExtraDrop.getPlugin().getLogger().error("This item or block doesn't exist! (" + trigger + ")");
-				continue;
-			}
-			else
-			{
-				BlockDrop bd = new BlockDrop(trigger);
+			get().getNode("global").getChildrenMap().forEach((k, v) -> {
 				
-				for (Entry<Object, ? extends CommentedConfigurationNode> v : s.getValue().getChildrenMap().entrySet())
+				DropArgs da = DropArgs.valueOf(k.toString().toUpperCase());
+				
+				if (da.checkLevel(DropLevel.GLOBAL))
 				{
-					String dropBlock = v.getKey().toString();
-					double chance = v.getValue().getNode("chance").getDouble();
-					
-					bd.addDrop(chance, dropBlock);
-					
+					global.add(DropValue.builder().key(k).value(v).build());
 				}
-				
-				ExtraDrop.getPlugin().managerDrops.addDrop(bd);
-			}
+			});
 		}
+		
+		
+		get().getChildrenMap().forEach((k,v) ->{
+			if (!k.equals("global"))
+			{
+				DropGroup dg = new DropGroup(k.toString(), global);
+				
+				ExtraDrop.getPlugin().getLogger().info("GROUP");
+				
+				v.getChildrenMap().forEach((gk,gv) ->{
+					if (!gv.hasMapChildren())
+					{
+						DropArgs da = DropArgs.valueOf(gk.toString().toUpperCase());
+						
+						if (da.checkLevel(DropLevel.GROUP))
+						{
+							dg.addValue(DropValue.builder().key(gk).value(gv).build());
+						}
+					}
+				});
+				
+				
+				ExtraDrop.getPlugin().getLogger().info("ITEM");
+				v.getChildrenMap().forEach((gk,gv) ->{
+					if (gv.hasMapChildren())
+					{
+						DropElement de = new DropElement(gk.toString());
+						
+						gv.getChildrenMap().forEach((ik,iv) ->{
+							if (!iv.hasMapChildren())
+							{
+								DropArgs da = DropArgs.valueOf(ik.toString().toUpperCase());
+								
+								if (da.checkLevel(DropLevel.ITEM))
+								{
+									de.addValue(DropValue.builder().key(ik).value(iv).build());
+									
+								}
+							}
+						});
+						
+						dg.addDrop(de);
+						
+					}
+				});
+				
+				ExtraDrop.getPlugin().managerDrops.addDrop(dg);
+				
+			}
+		});
+		
 	}
 
 }

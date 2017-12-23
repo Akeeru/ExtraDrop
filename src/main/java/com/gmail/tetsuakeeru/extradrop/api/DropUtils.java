@@ -5,40 +5,59 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.gmail.tetsuakeeru.extradrop.api.Trigger.Triggers;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropArgs;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropLevel;
 
 public class DropUtils
 {
-	public static List<Trigger> findTrigger(Triggers key, Set<Trigger> triggers)
+	public static List<DropValue> findValue(DropArgs arg, Set<DropValue> values)
 	{
-		List<Trigger> temp = new ArrayList<>();
-
-		triggers.forEach(item -> {
-			if (item.trigger == key)
+		List<DropValue> temp = new ArrayList<>();
+		
+		values.forEach(item -> {
+			if (item.arg.equals(arg))
 			{
 				temp.add(item);
 			}
 		});
-
+		
 		return temp;
 	}
-
-	public static boolean comparateTriggers(Set<Trigger> main, Set<Trigger> side)
+	
+	public static boolean comparateValues(Set<DropValue> main, Set<DropValue> side)
 	{
 		boolean bool = true;
-
-		for (Trigger s : side)
+		
+		for (DropValue dv : side)
 		{
-			Set<Trigger> temp = new HashSet<>();
-
-			main.stream().filter(item -> item.equals(s)).forEach(item -> temp.add(item));;
-
-			if (temp.size() <= 0)
+			List<DropValue> s = findValue(dv.arg, main);
+			
+			if(!s.isEmpty())
 			{
-				bool = false;
+				if(!s.get(0).val.equals(dv.val))
+				{
+					bool = false;
+				}
 			}
 		}
-
+		
+		
+		
 		return bool;
+	}
+	
+	public static Set<DropValue> clearValues(Set<DropValue> values, DropLevel lvl)
+	{
+		Set<DropValue> set = new HashSet<>();
+		
+		values.forEach(item -> {
+			if (!item.arg.checkLevel(lvl) && item.arg.isInherit())
+			{
+				set.add(item);
+			}
+		});
+		
+		return set;
+		
 	}
 }

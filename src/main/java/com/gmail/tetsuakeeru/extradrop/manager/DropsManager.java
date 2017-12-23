@@ -2,71 +2,47 @@ package com.gmail.tetsuakeeru.extradrop.manager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import com.gmail.tetsuakeeru.extradrop.api.BaseDrop;
-import com.gmail.tetsuakeeru.extradrop.api.Trigger;
+import com.gmail.tetsuakeeru.extradrop.api.DropGroup;
+import com.gmail.tetsuakeeru.extradrop.api.DropUtils;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue;
+import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropLevel;
 
 public class DropsManager
 {
-	private List<BaseDrop> drops = new ArrayList<>();
+	private List<DropGroup> groups = new ArrayList<>();
 
 	public DropsManager()
 	{}
 
-	public List<BaseDrop> getDrops(Set<Trigger> set)
+	public List<DropGroup> getAllDropGroups()
 	{
-		List<BaseDrop> temp = new ArrayList<>();
-
-		for (BaseDrop bd : drops)
-		{
-
-			if (bd.checkSet(set))
+		return groups;
+	}
+	
+	public void addDrop(DropGroup group)
+	{
+		groups.add(group);
+	}
+	
+	public void exeDrop(Location<World> loc, Set<DropValue> values)
+	{
+		groups.forEach(item -> {
+			
+			if(DropUtils.comparateValues(values, item.getValues()))
 			{
-				temp.add(bd);
+				item.exe(loc, DropUtils.clearValues(values, DropLevel.GROUP));
 			}
-		}
-
-		return temp;
-	}
-
-	public List<BaseDrop> getAllDrops()
-	{
-		return drops;
-	}
-
-	public void addDrop(BaseDrop drop)
-	{
-		drops.add(drop);
-	}
-
-	public void exeDrop(Location<World> loc)
-	{
-		Random rand = new Random();
-		double chance = rand.nextDouble();
-
-		for (BaseDrop bd : getAllDrops())
-		{
-			bd.exe(chance, loc);
-		}
-	}
-
-	public void exeDropTriggers(Set<Trigger> triggers, Location<World> loc)
-	{
-		List<BaseDrop> tr = getDrops(triggers);
-
-		Random rand = new Random();
-		double chance = rand.nextDouble();
-
-		tr.forEach(item -> item.exe(chance, loc));
+			
+		});
 	}
 
 	public void clear()
 	{
-		drops.clear();
+		groups.clear();
 	}
 }
