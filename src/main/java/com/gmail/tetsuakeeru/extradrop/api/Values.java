@@ -1,10 +1,11 @@
 package com.gmail.tetsuakeeru.extradrop.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 
 public class Values
 {
@@ -27,25 +28,49 @@ public class Values
 		return ob;
 	}
 
-	public void addValue(DropArgs arg, Object val)
+	public void add(DropArgs arg, Object val)
 	{
-		if (mapData.containsKey(arg))
+		if (val instanceof CommentedConfigurationNode)
 		{
-			mapData.replace(arg, val);
+			add(arg, (CommentedConfigurationNode)val);
 		}
 		else
 		{
-			mapData.put(arg, val);
+			if (mapData.containsKey(arg))
+			{
+				mapData.replace(arg, val);
+			}
+			else
+			{
+				mapData.put(arg, val);
+			}
 		}
 	}
 
-	public void addValue(DropArgs arg, ConfigurationNode node)
+	public boolean hasArg(DropArgs arg)
+	{
+		return mapData.containsKey(arg);
+	}
+	
+	public Object get(DropArgs arg)
+	{
+		if (hasArg(arg))
+		{
+			return mapData.get(arg);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	private void add(DropArgs arg, CommentedConfigurationNode node)
 	{
 		Object ob = null;
 
 		if (arg == DropArgs.TYPE)
 		{
-			ob = node.getString().toUpperCase();
+			ob = DropType.valueOf(node.getString().toUpperCase());
 		}
 		else
 		{
@@ -76,14 +101,46 @@ public class Values
 
 			if (ob != null)
 			{
-				if (!ob.equals(s.getValue()))
+				
+				if (s.getKey().getClazz() == List.class)
 				{
-					bool = false;
+					bool = comparateList(side.get(DropArgs.TOOL), ob);
+					break;
+				}
+				else
+				{
+					if (!ob.equals(s.getValue()))
+					{
+						bool = false;
+						break;
+					}
+					
 					break;
 				}
 			}
 		}
 
+		return bool;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private boolean comparateList(Object main, Object side)
+	{
+		List<Object> l1 = (List<Object>) main;
+		List<Object> l2 = (List<Object>) side;
+		
+		boolean bool = false;
+		
+		for (Object ob : l2)
+		{
+			if (l1.contains(ob))
+			{
+				bool = true;
+				break;
+			}
+		}
+		
+		
 		return bool;
 	}
 
@@ -95,7 +152,7 @@ public class Values
 
 			if (k.checkLevel(lvl) && k.isInherit())
 			{
-				val.addValue(k, v);
+				val.add(k, v);
 			}
 		});
 

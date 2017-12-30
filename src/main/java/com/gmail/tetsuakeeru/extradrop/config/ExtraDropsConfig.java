@@ -32,8 +32,6 @@ public class ExtraDropsConfig extends BaseConfig
 				String name = s.getKey().toString();
 				boolean turn = s.getValue().getBoolean();
 
-				ExtraDrop.getPlugin().getLogger().info("Include '" + name + "':" + turn);
-
 				if (turn)
 				{
 					String folders = name.substring(0, name.lastIndexOf("/") + 1);

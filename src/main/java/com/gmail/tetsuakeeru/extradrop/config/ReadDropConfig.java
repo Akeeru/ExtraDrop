@@ -1,15 +1,12 @@
 package com.gmail.tetsuakeeru.extradrop.config;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
 import com.gmail.tetsuakeeru.extradrop.api.BaseConfig;
 import com.gmail.tetsuakeeru.extradrop.api.DropArgs;
 import com.gmail.tetsuakeeru.extradrop.api.DropElement;
 import com.gmail.tetsuakeeru.extradrop.api.DropGroup;
 import com.gmail.tetsuakeeru.extradrop.api.DropLevel;
-import com.gmail.tetsuakeeru.extradrop.api.DropValue;
+import com.gmail.tetsuakeeru.extradrop.api.Values;
 
 public class ReadDropConfig extends BaseConfig
 {
@@ -28,7 +25,9 @@ public class ReadDropConfig extends BaseConfig
 	@Override
 	public void init()
 	{
-		Set<DropValue> global = new HashSet<>();
+		// Set<DropValue> global = new HashSet<>();
+
+		Values valGLOBAL = new Values();
 
 		ExtraDrop.getPlugin().getLogger().info("GLOBAL");
 
@@ -40,15 +39,15 @@ public class ReadDropConfig extends BaseConfig
 
 				if (da.checkLevel(DropLevel.GLOBAL))
 				{
-					global.add(DropValue.builder().key(k).value(v).build());
+					valGLOBAL.add(da, v);
 				}
 			});
 		}
-
+		
 		get().getChildrenMap().forEach((k, v) -> {
 			if (!k.equals("global"))
 			{
-				DropGroup dg = new DropGroup(k.toString(), global);
+				DropGroup dg = new DropGroup(k.toString(), valGLOBAL);
 
 				ExtraDrop.getPlugin().getLogger().info("GROUP");
 
@@ -59,7 +58,7 @@ public class ReadDropConfig extends BaseConfig
 
 						if (da.checkLevel(DropLevel.GROUP))
 						{
-							dg.addValue(DropValue.builder().key(gk).value(gv).build());
+							dg.addValue(da, gv);
 						}
 					}
 				});
@@ -77,7 +76,7 @@ public class ReadDropConfig extends BaseConfig
 
 								if (da.checkLevel(DropLevel.ITEM))
 								{
-									de.addValue(DropValue.builder().key(ik).value(iv).build());
+									de.addValue(da, iv);
 
 								}
 							}
