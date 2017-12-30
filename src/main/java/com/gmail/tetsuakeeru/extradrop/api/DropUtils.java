@@ -5,9 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropArgs;
-import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropLevel;
-
 public class DropUtils
 {
 	public static List<DropValue> findValue(DropArgs arg, Set<DropValue> values)

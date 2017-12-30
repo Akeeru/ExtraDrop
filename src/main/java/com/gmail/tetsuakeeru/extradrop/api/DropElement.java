@@ -16,19 +16,17 @@ import org.spongepowered.api.world.extent.Extent;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.gmail.tetsuakeeru.extradrop.ExtraDrop;
-import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropArgs;
-import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropType;
 
 public class DropElement
 {
-	
+
 	protected Set<DropValue> values = new HashSet<>();
-	
+
 	public DropElement(String name)
 	{
 		addValue(new DropValue(DropArgs.NAME, name));
 	}
-	
+
 	public void addValue(DropValue dv)
 	{
 		if (DropUtils.findValue(dv.arg, values).isEmpty())
@@ -40,14 +38,14 @@ public class DropElement
 			removeValue(dv.arg);
 			values.add(dv);
 		}
-		
+
 	}
-	
+
 	public Set<DropValue> getValues()
 	{
 		return values;
 	}
-	
+
 	public void removeValue(DropArgs arg)
 	{
 		values.forEach(item -> {
@@ -57,25 +55,25 @@ public class DropElement
 			}
 		});
 	}
-	
+
 	public DropValue find(DropArgs arg)
 	{
 		List<DropValue> ldv = DropUtils.findValue(arg, values);
-		
+
 		return ldv.isEmpty() ? null : ldv.get(0);
 	}
-	
+
 	public void exe(Location<World> location, Set<DropValue> set)
 	{
 		Location<World> loc = location.add(0.5, 0.3, 0.5);
 
 		Extent extent = loc.getExtent();
-		
+
 		DropType s = (DropType) DropUtils.findValue(DropArgs.TYPE, values).get(0).val;
 		String name = (String) DropUtils.findValue(DropArgs.NAME, values).get(0).val;
-		
+
 		Entity ent = null;
-		
+
 		switch (s)
 		{
 			case BLOCK:
@@ -85,16 +83,16 @@ public class DropElement
 				ent = extent.createEntity(EntityTypes.ITEM, loc.getPosition());
 				ent.offer(Keys.REPRESENTED_ITEM, isi.createSnapshot());
 				break;
-				
+
 			case ENTITY:
 				EntityType et = ExtraDrop.getPlugin().getGame().getRegistry().getType(EntityType.class, name).get();
 				ent = extent.createEntity(et, loc.getPosition());
-				
+
 				break;
 		}
-		
+
 		ent.setVelocity(new Vector3d(0, 0, 0));
 		extent.spawnEntity(ent);
-		
+
 	}
 }

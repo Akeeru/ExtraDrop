@@ -9,9 +9,6 @@ import java.util.Set;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
-import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropArgs;
-import com.gmail.tetsuakeeru.extradrop.api.DropValue.DropLevel;
-
 public class DropGroup
 {
 	protected List<DropElement> drops = new ArrayList<>();
@@ -50,7 +47,7 @@ public class DropGroup
 	{
 		return drops;
 	}
-	
+
 	public void removeValue(DropArgs arg)
 	{
 		values.forEach(item -> {
@@ -73,12 +70,12 @@ public class DropGroup
 			values.add(dv);
 		}
 	}
-	
+
 	public void exe(Location<World> loc, Set<DropValue> set)
-	{		
+	{
 		drops.forEach(item -> {
 			if (DropUtils.comparateValues(set, item.values))
-			{				
+			{
 				if (DropUtils.findValue(DropArgs.CHANCE, item.values).isEmpty())
 				{
 					item.exe(loc, DropUtils.clearValues(set, DropLevel.ITEM));
@@ -88,9 +85,9 @@ public class DropGroup
 					Random rand = new Random();
 
 					double chn = rand.nextDouble();
-					
+
 					double chance = (double) DropUtils.findValue(DropArgs.CHANCE, item.values).get(0).val;
-					
+
 					if (chance >= chn)
 					{
 						item.exe(loc, DropUtils.clearValues(set, DropLevel.ITEM));
