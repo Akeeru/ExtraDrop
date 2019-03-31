@@ -3,6 +3,7 @@ package com.gmail.tetsuakeeru.extradrop;
 import java.nio.file.Path;
 
 import org.slf4j.Logger;
+
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
@@ -36,7 +37,7 @@ public class ExtraDrop
 	private Game game = Sponge.getGame();
 
 	private ExtraDropsConfig edsconfig;
-	
+
 	public EventManager managerEvent;
 	public DropsManager managerDrops;
 
@@ -44,7 +45,7 @@ public class ExtraDrop
 	public void preInit(GamePreInitializationEvent event)
 	{
 		plugin = this;
-		
+
 		managerDrops = new DropsManager();
 
 		edsconfig = new ExtraDropsConfig("extradrop.conf");
@@ -56,13 +57,13 @@ public class ExtraDrop
 	{
 		managerEvent = new EventManager(plugin);
 		CommandManager.load(plugin);
-		
+
 	}
 
 	@Listener
 	public void postInit(GamePostInitializationEvent event)
 	{
-		
+
 	}
 
 	@Listener
@@ -97,12 +98,12 @@ public class ExtraDrop
 	{
 		return configDir;
 	}
-	
+
 	public Logger getLogger()
 	{
 		return logger;
 	}
-	
+
 	public void reload()
 	{
 		edsconfig.reload();
