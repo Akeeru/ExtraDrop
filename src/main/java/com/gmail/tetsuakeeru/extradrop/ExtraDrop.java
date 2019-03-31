@@ -1,7 +1,7 @@
 package com.gmail.tetsuakeeru.extradrop;
 
 import java.nio.file.Path;
-
+/*
 import org.slf4j.Logger;
 
 import org.spongepowered.api.Game;
@@ -14,7 +14,7 @@ import org.spongepowered.api.event.game.state.GamePostInitializationEvent;
 import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppedServerEvent;
-import org.spongepowered.api.plugin.Plugin;
+import org.spongepowered.api.plugin.Plugin;*/
 
 import com.gmail.tetsuakeeru.extradrop.config.ExtraDropsConfig;
 import com.gmail.tetsuakeeru.extradrop.manager.CommandManager;
